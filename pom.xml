@@ -33,7 +33,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>it.arsinfo.myplugin.clients.opennms.v1.*</Export-Package>
+                        <Export-Package>it.arsinfo.myplugin.clients.opennms.v2.*</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -67,12 +67,12 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/build/resources/openapi-opennms-v1.json</inputSpec>
+                            <inputSpec>${project.basedir}/src/build/resources/openapi-opennms-v2.json</inputSpec>
                             <language>java</language>
                             <library>okhttp4-gson</library>
-                            <apiPackage>it.arsinfo.myplugin.clients.opennms.v1.api</apiPackage>
-                            <modelPackage>it.arsinfo.myplugin.clients.opennms.v1.model</modelPackage>
-                            <invokerPackage>it.arsinfo.myplugin.clients.opennms.v1.handler</invokerPackage>
+                            <apiPackage>it.arsinfo.myplugin.clients.opennms.v2.api</apiPackage>
+                            <modelPackage>it.arsinfo.myplugin.clients.opennms.v2.model</modelPackage>
+                            <invokerPackage>it.arsinfo.myplugin.clients.opennms.v2.handler</invokerPackage>
                             <generateApiTests>false</generateApiTests>
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateModelTests>false</generateModelTests>
