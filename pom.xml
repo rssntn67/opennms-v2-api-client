@@ -65,7 +65,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/build/resources/openapi-opennms-v2.json</inputSpec>
+                            <inputSpec>${project.basedir}/src/build/resources/openapi-opennms.json</inputSpec>
                             <language>java</language>
                             <library>jersey2</library>
                             <apiPackage>it.arsinfo.myplugin.clients.opennms.v2.api</apiPackage>
