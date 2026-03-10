@@ -17,6 +17,11 @@
         <junit.version>4.13.1</junit.version>
         <log4j.version>2.17.2</log4j.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
+        <maven-bundle-plugin.version>5.1.9</maven-bundle-plugin.version>
+        <build-helper-maven-plugin.version>1.4</build-helper-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+        <jersey-hk2.version>2.47</jersey-hk2.version>
+        <sl4j-simple.version>1.7.32</sl4j-simple.version>
     </properties>
 
 
@@ -27,18 +32,18 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.9</version>
+                <version>${maven-bundle-plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>it.arsinfo.myplugin.clients.opennms.v2.*</Export-Package>
+                        <Export-Package>it.arsinfo.clients.opennms.*,it.arsinfo.clients.opennms.v2.*</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.4</version>
+                <version>${build-helper-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>test</id>
@@ -48,7 +53,8 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${basedir}/target/generated-sources</source>
+                                <source>${project.build.directory}/generated-sources/openapi-opennms/src/main/java</source>
+                                <source>${project.build.directory}/generated-sources/openapi-opennms-v2/src/main/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -56,31 +62,58 @@
             </plugin>
 
             <plugin>
-                <groupId>io.swagger.codegen.v3</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.55</version>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>generate-opennms</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/src/build/resources/openapi-opennms.json</inputSpec>
-                            <language>java</language>
+                            <output>${project.build.directory}/generated-sources/openapi-opennms</output>
+                            <generatorName>java</generatorName>
                             <library>jersey2</library>
-                            <apiPackage>it.arsinfo.myplugin.clients.opennms.v2.api</apiPackage>
-                            <modelPackage>it.arsinfo.myplugin.clients.opennms.v2.model</modelPackage>
-                            <invokerPackage>it.arsinfo.myplugin.clients.opennms.v2.handler</invokerPackage>
+                            <apiPackage>it.arsinfo.clients.opennms.api</apiPackage>
+                            <modelPackage>it.arsinfo.clients.opennms.model</modelPackage>
+                            <invokerPackage>it.arsinfo.clients.opennms.handler</invokerPackage>
                             <generateApiTests>false</generateApiTests>
-                            <generateApiDocumentation>false</generateApiDocumentation>
                             <generateModelTests>false</generateModelTests>
-                            <generateModelDocumentation>false</generateModelDocumentation>
                             <generateSupportingFiles>true</generateSupportingFiles>
+                            <skipValidateSpec>true</skipValidateSpec>
                             <configOptions>
                                 <sourceFolder>src/main/java</sourceFolder>
                                 <interfaceOnly>true</interfaceOnly>
                                 <dateLibrary>java8</dateLibrary>
-                                <java11>true</java11>
+                                <openApiNullable>false</openApiNullable>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-opennms-v2</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/build/resources/openapi-opennms-v2.json</inputSpec>
+                            <output>${project.build.directory}/generated-sources/openapi-opennms-v2</output>
+                            <generatorName>java</generatorName>
+                            <library>jersey2</library>
+                            <apiPackage>it.arsinfo.clients.opennms.v2.api</apiPackage>
+                            <modelPackage>it.arsinfo.clients.opennms.v2.model</modelPackage>
+                            <invokerPackage>it.arsinfo.clients.opennms.v2.handler</invokerPackage>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <schemaMappings>MapStringTimeTrackingMonitor=java.util.Map</schemaMappings>
+                            <configOptions>
+                                <sourceFolder>src/main/java</sourceFolder>
+                                <interfaceOnly>true</interfaceOnly>
+                                <dateLibrary>java8</dateLibrary>
+                                <openApiNullable>false</openApiNullable>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -113,7 +146,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.47</version>
+            <version>${jersey-hk2.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -124,6 +157,11 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>${javax.annotation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <dependency>
@@ -160,7 +198,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.32</version>
+            <version>${sl4j-simple.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

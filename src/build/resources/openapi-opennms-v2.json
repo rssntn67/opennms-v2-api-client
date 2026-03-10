@@ -29,6 +29,9 @@
     "name" : "Discovery",
     "description" : "Discovery API"
   }, {
+    "name" : "EventConf",
+    "description" : "EventConf API"
+  }, {
     "name" : "Events",
     "description" : "Events API V2"
   }, {
@@ -1059,6 +1062,672 @@
                 "example" : null
               }
             }
+          }
+        }
+      }
+    },
+    "/eventconf/sources/eventConfSource" : {
+      "post" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Add a new  EventConfSource",
+        "description" : "Creates and adds a new  EventConfSource.",
+        "operationId" : "addEventConfSourceEvent",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddEventConfSourceRequest"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "EventConfSource created successfully"
+          },
+          "400" : {
+            "description" : "Invalid request (missing/invalid data)"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/{sourceId}/events" : {
+      "post" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Add a new event to an EventConfSource",
+        "description" : "Creates and adds a new event under the given EventConfSource by its ID.",
+        "operationId" : "addEventConfSourceEvent_1",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              },
+              "example" : null
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Event created successfully"
+          },
+          "400" : {
+            "description" : "Invalid request (missing/invalid data)"
+          },
+          "404" : {
+            "description" : "EventConfSource not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Delete Events for a Source",
+        "description" : "Delete one or more events belonging to the specified eventConf source.",
+        "operationId" : "deleteEventsForSource",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventConfEventDeletePayload"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Events deleted successfully"
+          },
+          "400" : {
+            "description" : "Invalid request (missing/invalid event IDs)"
+          },
+          "404" : {
+            "description" : "Source or one or more events not found"
+          }
+        }
+      }
+    },
+    "/eventconf/sources" : {
+      "delete" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Delete EventConf Sources",
+        "description" : "Delete one or more eventConf sources by their IDs.",
+        "operationId" : "deleteEventConfSources",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventConfSourceDeletePayload"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Sources deleted successfully"
+          },
+          "400" : {
+            "description" : "Invalid request (missing/invalid IDs)"
+          },
+          "404" : {
+            "description" : "One or more sources not found"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/{sourceId}/events/download" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Download EventConf XML for a Source",
+        "description" : "    Downloads all EventConf events associated with the specified source ID.\n",
+        "operationId" : "downloadEventConfXmlBySourceId",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConf XML downloaded successfully",
+            "content" : {
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid or missing source ID"
+          },
+          "404" : {
+            "description" : "No events found for the specified source ID"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/status" : {
+      "patch" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Enable/Disable EventConf Sources",
+        "description" : "Enable or disable one or more sources (and optionally cascade to their events)",
+        "operationId" : "enableDisableEventConfSources",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventConfSrcEnableDisablePayload"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully"
+          },
+          "400" : {
+            "description" : "Invalid request"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/{sourceId}/events/status" : {
+      "patch" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Update EventConf Sources events",
+        "description" : "Update one or more eventConf sources  by their events IDs.",
+        "operationId" : "enableDisableConfSourcesEvents",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EnableDisableConfSourceEventsPayload"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully"
+          },
+          "400" : {
+            "description" : "Invalid request (missing/invalid IDs)"
+          },
+          "404" : {
+            "description" : "One or more sources not found"
+          }
+        }
+      }
+    },
+    "/eventconf/filter/{sourceId}/events" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Get EventConfEvents by Source ID with filtering and sorting",
+        "description" : "Retrieves EventConfEvent records for the given source ID with optional filtering, sorting, and pagination.\n- `eventFilter`: case-insensitive match on UEI, Event Label, or Description.\n- `eventSortBy`: sort field `uei`, `eventLabel`, `description`, `enabled` defaults to `createdTime` if invalid.\n- `eventOrder`: `asc` or `desc` (default: `desc`).\n- `offset` and `limit`: for pagination.",
+        "operationId" : "filterConfEventBySourceId",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        }, {
+          "name" : "eventFilter",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "eventSortBy",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "eventOrder",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "totalRecords",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConf records retrieved successfully",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request – invalid or missing input parameters",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          },
+          "204" : {
+            "description" : "No matching EventConfEvent record found for the given criteria",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventconf/filter" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Filter EventConf Records",
+        "description" : "Fetch EventConf records based on provided filters such as UEI, vendor, source and name.",
+        "operationId" : "filterEventConf",
+        "parameters" : [ {
+          "name" : "uei",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "vendor",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "sourceName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConf records retrieved successfully",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request – invalid or missing input parameters",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          },
+          "204" : {
+            "description" : "No matching EventConf records found for the given criteria",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              },
+              "application/xml" : {
+                "example" : null
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventconf/filter/sources" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Filter EventConfSource Records",
+        "description" : "Fetch EventConfSource records based on provided filters such as name, vendor, description, fileOrder and eventCount.",
+        "operationId" : "filterEventConfSource",
+        "parameters" : [ {
+          "name" : "filter",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "order",
+          "in" : "query",
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        }, {
+          "name" : "totalRecords",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConfSource records retrieved successfully",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request – invalid or missing input parameters",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              }
+            }
+          },
+          "204" : {
+            "description" : "No matching EventConfSource records found for the given criteria",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eventconf/sources/{sourceId}" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Get EventConfSource by ID",
+        "description" : "Retrieve an EventConfSource by its unique identifier.",
+        "operationId" : "getEventConfSourceById",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConfSource retrieved successfully"
+          },
+          "404" : {
+            "description" : "EventConfSource not found"
+          },
+          "400" : {
+            "description" : "Bad request"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/names" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Get EventConf Source Names",
+        "description" : "Retrieve the names of all EventConf sources stored in the database.",
+        "operationId" : "getEventConfSourcesNames",
+        "responses" : {
+          "200" : {
+            "description" : "Successfully retrieved source names"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/eventconf/vendors/{vendorName}/events" : {
+      "get" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Get EventConf Events by Vendor",
+        "description" : "Returns all EventConf events associated with the specified vendor name.",
+        "operationId" : "getEventsByVendor",
+        "parameters" : [ {
+          "name" : "vendorName",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : null
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "EventConf Events retrieved successfully",
+            "content" : {
+              "application/json" : {
+                "example" : null
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid or missing vendor name"
+          },
+          "404" : {
+            "description" : "No events found for the specified vendor"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/eventconf/sources/{sourceId}/events/{eventId}" : {
+      "put" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Update EventConf  Event",
+        "description" : "Update  eventConf event by sourceId and eventId.",
+        "operationId" : "updateEventConfEvent",
+        "parameters" : [ {
+          "name" : "sourceId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        }, {
+          "name" : "eventId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventConfEventEditRequest"
+              },
+              "example" : null
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventConfEventEditRequest"
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully"
+          },
+          "400" : {
+            "description" : "Invalid request"
+          },
+          "404" : {
+            "description" : "One or more sources not found"
+          }
+        }
+      }
+    },
+    "/eventconf/upload" : {
+      "post" : {
+        "tags" : [ "EventConf" ],
+        "summary" : "Upload eventconf files",
+        "description" : "Upload one or more eventconf files including optional eventconf.xml to determine file order.",
+        "operationId" : "uploadEventConfFiles",
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "array",
+                "example" : null,
+                "items" : {
+                  "$ref" : "#/components/schemas/Attachment"
+                }
+              },
+              "example" : null
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Upload successful"
+          },
+          "400" : {
+            "description" : "Invalid eventconf.xml or request"
           }
         }
       }
@@ -9613,6 +10282,13 @@
             "format" : "int32",
             "example" : null
           },
+          "managedObject" : {
+            "$ref" : "#/components/schemas/ManagedObject"
+          },
+          "reductionKey" : {
+            "type" : "string",
+            "example" : null
+          },
           "alarmType" : {
             "type" : "integer",
             "format" : "int32",
@@ -9622,17 +10298,6 @@
             "type" : "string",
             "example" : null
           },
-          "reductionKey" : {
-            "type" : "string",
-            "example" : null
-          },
-          "managedObject" : {
-            "$ref" : "#/components/schemas/ManagedObject"
-          },
-          "autoClean" : {
-            "type" : "boolean",
-            "example" : null
-          },
           "x733AlarmType" : {
             "type" : "string",
             "example" : null
@@ -9640,6 +10305,10 @@
           "x733ProbableCause" : {
             "type" : "integer",
             "format" : "int32",
+            "example" : null
+          },
+          "autoClean" : {
+            "type" : "boolean",
             "example" : null
           },
           "updateFieldList" : {
@@ -9734,10 +10403,6 @@
             "type" : "string",
             "example" : null
           },
-          "uuid" : {
-            "type" : "string",
-            "example" : null
-          },
           "service" : {
             "type" : "string",
             "example" : null
@@ -9746,17 +10411,20 @@
             "type" : "string",
             "example" : null
           },
-          "dbid" : {
+          "parmCollection" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/Parm"
+            }
+          },
+          "interface" : {
+            "type" : "string",
+            "example" : null
+          },
+          "ifIndex" : {
             "type" : "integer",
-            "format" : "int64",
-            "example" : null
-          },
-          "distPoller" : {
-            "type" : "string",
-            "example" : null
-          },
-          "masterStation" : {
-            "type" : "string",
+            "format" : "int32",
             "example" : null
           },
           "nodeid" : {
@@ -9764,7 +10432,7 @@
             "format" : "int64",
             "example" : null
           },
-          "interface" : {
+          "uuid" : {
             "type" : "string",
             "example" : null
           },
@@ -9839,15 +10507,29 @@
             "type" : "string",
             "example" : null
           },
+          "pathoutage" : {
+            "type" : "string",
+            "example" : null
+          },
+          "ifAlias" : {
+            "type" : "string",
+            "example" : null
+          },
+          "dbid" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          },
+          "distPoller" : {
+            "type" : "string",
+            "example" : null
+          },
+          "masterStation" : {
+            "type" : "string",
+            "example" : null
+          },
           "snmp" : {
             "$ref" : "#/components/schemas/Snmp"
-          },
-          "parmCollection" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/Parm"
-            }
           },
           "descr" : {
             "type" : "string",
@@ -9855,10 +10537,6 @@
           },
           "logmsg" : {
             "$ref" : "#/components/schemas/Logmsg"
-          },
-          "pathoutage" : {
-            "type" : "string",
-            "example" : null
           },
           "correlation" : {
             "$ref" : "#/components/schemas/Correlation"
@@ -9872,15 +10550,6 @@
           },
           "tticket" : {
             "$ref" : "#/components/schemas/Tticket"
-          },
-          "ifIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "ifAlias" : {
-            "type" : "string",
-            "example" : null
           },
           "mouseovertext" : {
             "type" : "string",
@@ -10082,26 +10751,6 @@
             "type" : "string",
             "example" : null
           },
-          "distPoller" : {
-            "$ref" : "#/components/schemas/OnmsMonitoringSystem"
-          },
-          "alarmType" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "name" : "type",
-              "attribute" : true
-            }
-          },
-          "clearKey" : {
-            "type" : "string",
-            "example" : null
-          },
-          "reductionKey" : {
-            "type" : "string",
-            "example" : null
-          },
           "ifIndex" : {
             "type" : "integer",
             "format" : "int32",
@@ -10127,25 +10776,8 @@
               "attribute" : true
             }
           },
-          "x733AlarmType" : {
-            "type" : "string",
-            "example" : null
-          },
-          "x733ProbableCause" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "eventParameters" : {
-            "type" : "array",
-            "example" : null,
-            "xml" : {
-              "name" : "parameters",
-              "wrapped" : true
-            },
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsEventParameter"
-            }
+          "distPoller" : {
+            "$ref" : "#/components/schemas/OnmsMonitoringSystem"
           },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
@@ -10178,6 +10810,10 @@
           "reductionKeyMemo" : {
             "$ref" : "#/components/schemas/OnmsReductionKeyMemo"
           },
+          "reductionKey" : {
+            "type" : "string",
+            "example" : null
+          },
           "relatedAlarmIds" : {
             "uniqueItems" : true,
             "type" : "array",
@@ -10199,6 +10835,17 @@
               "name" : "ackUser"
             }
           },
+          "eventParameters" : {
+            "type" : "array",
+            "example" : null,
+            "xml" : {
+              "name" : "parameters",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsEventParameter"
+            }
+          },
           "lastEventTime" : {
             "type" : "string",
             "format" : "date-time",
@@ -10216,6 +10863,15 @@
             "type" : "string",
             "format" : "date-time",
             "example" : null
+          },
+          "alarmType" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "name" : "type",
+              "attribute" : true
+            }
           },
           "severityLabel" : {
             "type" : "string",
@@ -10297,6 +10953,10 @@
               "name" : "ackTime"
             }
           },
+          "clearKey" : {
+            "type" : "string",
+            "example" : null
+          },
           "lastEvent" : {
             "$ref" : "#/components/schemas/OnmsEvent"
           },
@@ -10306,6 +10966,15 @@
           },
           "ossPrimaryKey" : {
             "type" : "string",
+            "example" : null
+          },
+          "x733AlarmType" : {
+            "type" : "string",
+            "example" : null
+          },
+          "x733ProbableCause" : {
+            "type" : "integer",
+            "format" : "int32",
             "example" : null
           },
           "qosAlarmState" : {
@@ -10465,26 +11134,6 @@
             "example" : null
           },
           "description" : {
-            "type" : "string",
-            "example" : null
-          },
-          "vendor" : {
-            "type" : "string",
-            "example" : null
-          },
-          "modelNumber" : {
-            "type" : "string",
-            "example" : null
-          },
-          "manufacturer" : {
-            "type" : "string",
-            "example" : null
-          },
-          "serialNumber" : {
-            "type" : "string",
-            "example" : null
-          },
-          "circuitId" : {
             "type" : "string",
             "example" : null
           },
@@ -10672,6 +11321,26 @@
           "latitude" : {
             "type" : "number",
             "format" : "double",
+            "example" : null
+          },
+          "manufacturer" : {
+            "type" : "string",
+            "example" : null
+          },
+          "vendor" : {
+            "type" : "string",
+            "example" : null
+          },
+          "modelNumber" : {
+            "type" : "string",
+            "example" : null
+          },
+          "serialNumber" : {
+            "type" : "string",
+            "example" : null
+          },
+          "circuitId" : {
+            "type" : "string",
             "example" : null
           },
           "maintContractNumber" : {
@@ -11187,14 +11856,6 @@
               "attribute" : true
             }
           },
-          "ifIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
           "ipAddress" : {
             "type" : "object",
             "properties" : {
@@ -11278,6 +11939,14 @@
             "example" : null,
             "xml" : {
               "name" : "isDown",
+              "attribute" : true
+            }
+          },
+          "ifIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
               "attribute" : true
             }
           },
@@ -11400,11 +12069,6 @@
               "attribute" : true
             }
           },
-          "serviceId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
           "metaData" : {
             "type" : "array",
             "example" : null,
@@ -11436,24 +12100,15 @@
             "type" : "string",
             "example" : null
           },
+          "foreignSource" : {
+            "type" : "string",
+            "example" : null
+          },
           "ipInterface" : {
             "$ref" : "#/components/schemas/OnmsIpInterface"
           },
           "ipAddressAsString" : {
             "type" : "string",
-            "example" : null
-          },
-          "foreignSource" : {
-            "type" : "string",
-            "example" : null
-          },
-          "notify" : {
-            "type" : "string",
-            "example" : null
-          },
-          "ifIndex" : {
-            "type" : "integer",
-            "format" : "int32",
             "example" : null
           },
           "ipAddress" : {
@@ -11534,6 +12189,11 @@
               "attribute" : true
             }
           },
+          "ifIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
           },
@@ -11544,6 +12204,10 @@
             "items" : {
               "$ref" : "#/components/schemas/OnmsApplication"
             }
+          },
+          "notify" : {
+            "type" : "string",
+            "example" : null
           },
           "jsonId" : {
             "type" : "integer",
@@ -11576,6 +12240,11 @@
             }
           },
           "ipInterfaceId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "serviceId" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null
@@ -11711,12 +12380,11 @@
               "attribute" : true
             }
           },
-          "categories" : {
-            "uniqueItems" : true,
-            "type" : "array",
+          "foreignSource" : {
+            "type" : "string",
             "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsCategory"
+            "xml" : {
+              "attribute" : true
             }
           },
           "label" : {
@@ -11726,7 +12394,7 @@
               "attribute" : true
             }
           },
-          "foreignSource" : {
+          "foreignId" : {
             "type" : "string",
             "example" : null,
             "xml" : {
@@ -11736,11 +12404,31 @@
           "assetRecord" : {
             "$ref" : "#/components/schemas/OnmsAssetRecord"
           },
-          "foreignId" : {
+          "labelSource" : {
+            "type" : "string",
+            "example" : null,
+            "enum" : [ "U", "N", "H", "S", "A", " " ]
+          },
+          "netBiosName" : {
             "type" : "string",
             "example" : null,
             "xml" : {
-              "attribute" : true
+              "name" : "netBIOSName"
+            }
+          },
+          "netBiosDomain" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "netBIOSDomainName"
+            }
+          },
+          "categories" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsCategory"
             }
           },
           "createTime" : {
@@ -11780,25 +12468,6 @@
           "sysObjectId" : {
             "type" : "string",
             "example" : null
-          },
-          "labelSource" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "U", "N", "H", "S", "A", " " ]
-          },
-          "netBiosName" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "netBIOSName"
-            }
-          },
-          "netBiosDomain" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "netBIOSDomainName"
-            }
           }
         },
         "example" : null,
@@ -11823,6 +12492,10 @@
             "example" : null,
             "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
           },
+          "subject" : {
+            "type" : "string",
+            "example" : null
+          },
           "event" : {
             "$ref" : "#/components/schemas/OnmsEvent"
           },
@@ -11832,10 +12505,6 @@
             "example" : null
           },
           "nodeLabel" : {
-            "type" : "string",
-            "example" : null
-          },
-          "subject" : {
             "type" : "string",
             "example" : null
           },
@@ -12023,11 +12692,6 @@
           "node" : {
             "$ref" : "#/components/schemas/OnmsNode"
           },
-          "serviceId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
           "nodeId" : {
             "type" : "integer",
             "format" : "int32",
@@ -12037,15 +12701,15 @@
             "type" : "string",
             "example" : null
           },
-          "ipAddressAsString" : {
-            "type" : "string",
-            "example" : null
-          },
           "foreignSource" : {
             "type" : "string",
             "example" : null
           },
           "locationName" : {
+            "type" : "string",
+            "example" : null
+          },
+          "ipAddressAsString" : {
             "type" : "string",
             "example" : null
           },
@@ -12122,6 +12786,11 @@
           },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
+          },
+          "serviceId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
           },
           "monitoredService" : {
             "$ref" : "#/components/schemas/OnmsMonitoredService"
@@ -12257,18 +12926,6 @@
             "format" : "int32",
             "example" : null
           },
-          "ifIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "ifAlias" : {
-            "type" : "string",
-            "example" : null
-          },
           "hasFlows" : {
             "type" : "boolean",
             "example" : null
@@ -12300,6 +12957,18 @@
           },
           "hasEgressFlows" : {
             "type" : "boolean",
+            "example" : null
+          },
+          "ifIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "ifAlias" : {
+            "type" : "string",
             "example" : null
           },
           "ifDescr" : {
@@ -12390,19 +13059,9 @@
             "type" : "string",
             "example" : null
           },
-          "autoNotify" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
           "contactInfo" : {
             "type" : "string",
             "example" : null
-          },
-          "notification" : {
-            "$ref" : "#/components/schemas/OnmsNotification"
           },
           "notifyTime" : {
             "type" : "string",
@@ -12412,6 +13071,16 @@
           "media" : {
             "type" : "string",
             "example" : null
+          },
+          "autoNotify" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "notification" : {
+            "$ref" : "#/components/schemas/OnmsNotification"
           }
         },
         "example" : null,
@@ -12465,15 +13134,15 @@
             "format" : "int32",
             "example" : null
           },
+          "community" : {
+            "type" : "string",
+            "example" : null
+          },
           "trapOID" : {
             "type" : "string",
             "example" : null
           },
           "idtext" : {
-            "type" : "string",
-            "example" : null
-          },
-          "community" : {
             "type" : "string",
             "example" : null
           }
@@ -12765,6 +13434,508 @@
             "example" : null
           },
           "foreignSource" : {
+            "type" : "string",
+            "example" : null
+          }
+        },
+        "example" : null
+      },
+      "AddEventConfSourceRequest" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "description" : {
+            "type" : "string",
+            "example" : null
+          },
+          "vendor" : {
+            "type" : "string",
+            "example" : null
+          }
+        },
+        "example" : null
+      },
+      "Collection" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "rename" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "type" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            },
+            "enum" : [ "GAUGE", "COUNTER", "STRING" ]
+          },
+          "paramValue" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/ParamValue"
+            }
+          }
+        },
+        "example" : null,
+        "xml" : {
+          "name" : "collection"
+        }
+      },
+      "CollectionGroup" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "resourceType" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "instance" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "rrd" : {
+            "$ref" : "#/components/schemas/Rrd"
+          },
+          "collection" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/Collection"
+            }
+          }
+        },
+        "example" : null,
+        "xml" : {
+          "name" : "collectionGroup"
+        }
+      },
+      "ParamValue" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "key",
+              "attribute" : true
+            }
+          },
+          "value" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          }
+        },
+        "example" : null,
+        "xml" : {
+          "name" : "paramValue"
+        }
+      },
+      "Rrd" : {
+        "type" : "object",
+        "properties" : {
+          "step" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "heartBeat" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "rras" : {
+            "type" : "array",
+            "example" : null,
+            "xml" : {
+              "name" : "rra"
+            },
+            "items" : {
+              "type" : "string",
+              "example" : null,
+              "xml" : {
+                "name" : "rra"
+              }
+            }
+          }
+        },
+        "example" : null,
+        "xml" : {
+          "name" : "rrd"
+        }
+      },
+      "EventConfSourceDeletePayload" : {
+        "type" : "object",
+        "properties" : {
+          "sourceIds" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "integer",
+              "format" : "int64",
+              "example" : null
+            }
+          }
+        },
+        "example" : null
+      },
+      "EventConfEventDeletePayload" : {
+        "type" : "object",
+        "properties" : {
+          "eventIds" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "integer",
+              "format" : "int64",
+              "example" : null
+            }
+          }
+        },
+        "example" : null
+      },
+      "EventConfSrcEnableDisablePayload" : {
+        "type" : "object",
+        "properties" : {
+          "enabled" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "cascadeToEvents" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "sourceIds" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "integer",
+              "format" : "int64",
+              "example" : null
+            }
+          }
+        },
+        "example" : null
+      },
+      "EnableDisableConfSourceEventsPayload" : {
+        "type" : "object",
+        "properties" : {
+          "enable" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "eventsIds" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "integer",
+              "format" : "int64",
+              "example" : null
+            }
+          }
+        },
+        "example" : null
+      },
+      "EventConfEventEditRequest" : {
+        "type" : "object",
+        "properties" : {
+          "enabled" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "event" : {
+            "$ref" : "#/components/schemas/Event"
+          }
+        },
+        "example" : null,
+        "xml" : {
+          "name" : "eventEdit"
+        }
+      },
+      "Attachment" : {
+        "type" : "object",
+        "properties" : {
+          "headers" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "example" : null,
+              "items" : {
+                "type" : "string",
+                "example" : null
+              }
+            },
+            "example" : null
+          },
+          "object" : {
+            "type" : "object",
+            "example" : null
+          },
+          "contentDisposition" : {
+            "$ref" : "#/components/schemas/ContentDisposition"
+          },
+          "contentId" : {
+            "type" : "string",
+            "example" : null
+          },
+          "dataHandler" : {
+            "type" : "object",
+            "properties" : {
+              "commandMap" : {
+                "type" : "object",
+                "properties" : {
+                  "mimeTypes" : {
+                    "type" : "array",
+                    "example" : null,
+                    "items" : {
+                      "type" : "string",
+                      "example" : null
+                    }
+                  }
+                },
+                "writeOnly" : true,
+                "example" : null
+              },
+              "name" : {
+                "type" : "string",
+                "example" : null
+              },
+              "inputStream" : {
+                "type" : "object",
+                "example" : null
+              },
+              "content" : {
+                "type" : "object",
+                "example" : null
+              },
+              "dataSource" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "example" : null
+                  },
+                  "inputStream" : {
+                    "type" : "object",
+                    "example" : null
+                  },
+                  "contentType" : {
+                    "type" : "string",
+                    "example" : null
+                  },
+                  "outputStream" : {
+                    "type" : "object",
+                    "example" : null
+                  }
+                },
+                "example" : null
+              },
+              "transferDataFlavors" : {
+                "type" : "array",
+                "example" : null,
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "mimeType" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "humanPresentableName" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "subType" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "primaryType" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "representationClassInputStream" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "representationClassByteBuffer" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "flavorTextType" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "representationClassReader" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "representationClassCharBuffer" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "representationClassSerializable" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "representationClassRemote" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "mimeTypeSerializedObject" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "defaultRepresentationClassAsString" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "flavorSerializedObjectType" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "flavorRemoteObjectType" : {
+                      "type" : "boolean",
+                      "example" : null
+                    },
+                    "flavorJavaFileListType" : {
+                      "type" : "boolean",
+                      "example" : null
+                    }
+                  },
+                  "example" : null
+                }
+              },
+              "preferredCommands" : {
+                "type" : "array",
+                "example" : null,
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "commandName" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "commandClass" : {
+                      "type" : "string",
+                      "example" : null
+                    }
+                  },
+                  "example" : null
+                }
+              },
+              "allCommands" : {
+                "type" : "array",
+                "example" : null,
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "commandName" : {
+                      "type" : "string",
+                      "example" : null
+                    },
+                    "commandClass" : {
+                      "type" : "string",
+                      "example" : null
+                    }
+                  },
+                  "example" : null
+                }
+              },
+              "contentType" : {
+                "type" : "string",
+                "example" : null
+              },
+              "outputStream" : {
+                "type" : "object",
+                "example" : null
+              }
+            },
+            "example" : null
+          },
+          "contentType" : {
+            "type" : "object",
+            "properties" : {
+              "type" : {
+                "type" : "string",
+                "example" : null
+              },
+              "subtype" : {
+                "type" : "string",
+                "example" : null
+              },
+              "parameters" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string",
+                  "example" : null
+                },
+                "example" : null
+              },
+              "wildcardType" : {
+                "type" : "boolean",
+                "example" : null
+              },
+              "wildcardSubtype" : {
+                "type" : "boolean",
+                "example" : null
+              }
+            },
+            "example" : null
+          }
+        },
+        "example" : null
+      },
+      "ContentDisposition" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parameters" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "example" : null
+            },
+            "example" : null
+          },
+          "filename" : {
             "type" : "string",
             "example" : null
           }

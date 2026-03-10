@@ -14,7 +14,7 @@
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "url" : "http://opennms.infocube.it:8980/opennms/rest"
+    "url" : "http://localhost:8980/opennms/rest"
   } ],
   "tags" : [ {
     "name" : "Alarms",
@@ -10736,15 +10736,14 @@
             "format" : "int32",
             "example" : null
           },
-          "refId" : {
-            "type" : "integer",
-            "format" : "int32",
+          "log" : {
+            "type" : "string",
             "example" : null
           },
-          "ackTime" : {
+          "ackType" : {
             "type" : "string",
-            "format" : "date-time",
-            "example" : null
+            "example" : null,
+            "enum" : [ "Unspecified", "Alarm", "Notification" ]
           },
           "ackAction" : {
             "type" : "string",
@@ -10755,14 +10754,15 @@
             "type" : "string",
             "example" : null
           },
-          "log" : {
+          "ackTime" : {
             "type" : "string",
+            "format" : "date-time",
             "example" : null
           },
-          "ackType" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "Unspecified", "Alarm", "Notification" ]
+          "refId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
           }
         },
         "example" : null,
@@ -10783,7 +10783,7 @@
               "$ref" : "#/components/schemas/OnmsAcknowledgment"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -10799,7 +10799,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -10838,28 +10838,22 @@
       "AlarmData" : {
         "type" : "object",
         "properties" : {
-          "alarmType" : {
+          "updateFieldListCount" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : null
-          },
-          "reductionKey" : {
-            "type" : "string",
             "example" : null
           },
           "managedObject" : {
             "$ref" : "#/components/schemas/ManagedObject"
           },
-          "autoClean" : {
-            "type" : "boolean",
+          "reductionKey" : {
+            "type" : "string",
             "example" : null
           },
-          "updateFieldList" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/UpdateField"
-            }
+          "alarmType" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
           },
           "clearKey" : {
             "type" : "string",
@@ -10874,10 +10868,16 @@
             "format" : "int32",
             "example" : null
           },
-          "updateFieldListCount" : {
-            "type" : "integer",
-            "format" : "int32",
+          "autoClean" : {
+            "type" : "boolean",
             "example" : null
+          },
+          "updateFieldList" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/UpdateField"
+            }
           }
         },
         "example" : null,
@@ -10888,11 +10888,11 @@
       "Autoacknowledge" : {
         "type" : "object",
         "properties" : {
-          "content" : {
+          "state" : {
             "type" : "string",
             "example" : null
           },
-          "state" : {
+          "content" : {
             "type" : "string",
             "example" : null
           }
@@ -10905,6 +10905,10 @@
       "Correlation" : {
         "type" : "object",
         "properties" : {
+          "state" : {
+            "type" : "string",
+            "example" : null
+          },
           "path" : {
             "type" : "string",
             "example" : null
@@ -10925,10 +10929,6 @@
             "type" : "integer",
             "format" : "int32",
             "example" : null
-          },
-          "state" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -10939,7 +10939,24 @@
       "Event" : {
         "type" : "object",
         "properties" : {
-          "service" : {
+          "host" : {
+            "type" : "string",
+            "example" : null
+          },
+          "mask" : {
+            "$ref" : "#/components/schemas/Mask"
+          },
+          "time" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null
+          },
+          "creationTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null
+          },
+          "severity" : {
             "type" : "string",
             "example" : null
           },
@@ -10947,10 +10964,7 @@
             "type" : "string",
             "example" : null
           },
-          "correlation" : {
-            "$ref" : "#/components/schemas/Correlation"
-          },
-          "operinstruct" : {
+          "service" : {
             "type" : "string",
             "example" : null
           },
@@ -10979,49 +10993,7 @@
             "format" : "int64",
             "example" : null
           },
-          "mask" : {
-            "$ref" : "#/components/schemas/Mask"
-          },
-          "snmp" : {
-            "$ref" : "#/components/schemas/Snmp"
-          },
-          "descr" : {
-            "type" : "string",
-            "example" : null
-          },
-          "logmsg" : {
-            "$ref" : "#/components/schemas/Logmsg"
-          },
-          "severity" : {
-            "type" : "string",
-            "example" : null
-          },
           "uuid" : {
-            "type" : "string",
-            "example" : null
-          },
-          "snmphost" : {
-            "type" : "string",
-            "example" : null
-          },
-          "pathoutage" : {
-            "type" : "string",
-            "example" : null
-          },
-          "ifAlias" : {
-            "type" : "string",
-            "example" : null
-          },
-          "dbid" : {
-            "type" : "integer",
-            "format" : "int64",
-            "example" : null
-          },
-          "distPoller" : {
-            "type" : "string",
-            "example" : null
-          },
-          "masterStation" : {
             "type" : "string",
             "example" : null
           },
@@ -11092,6 +11064,48 @@
             },
             "example" : null
           },
+          "snmphost" : {
+            "type" : "string",
+            "example" : null
+          },
+          "pathoutage" : {
+            "type" : "string",
+            "example" : null
+          },
+          "ifAlias" : {
+            "type" : "string",
+            "example" : null
+          },
+          "dbid" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null
+          },
+          "distPoller" : {
+            "type" : "string",
+            "example" : null
+          },
+          "masterStation" : {
+            "type" : "string",
+            "example" : null
+          },
+          "snmp" : {
+            "$ref" : "#/components/schemas/Snmp"
+          },
+          "descr" : {
+            "type" : "string",
+            "example" : null
+          },
+          "logmsg" : {
+            "$ref" : "#/components/schemas/Logmsg"
+          },
+          "correlation" : {
+            "$ref" : "#/components/schemas/Correlation"
+          },
+          "operinstruct" : {
+            "type" : "string",
+            "example" : null
+          },
           "autoacknowledge" : {
             "$ref" : "#/components/schemas/Autoacknowledge"
           },
@@ -11128,20 +11142,6 @@
           "scriptCount" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : null
-          },
-          "host" : {
-            "type" : "string",
-            "example" : null
-          },
-          "time" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null
-          },
-          "creationTime" : {
-            "type" : "string",
-            "format" : "date-time",
             "example" : null
           }
         },
@@ -11204,15 +11204,6 @@
       "OnmsAlarm" : {
         "type" : "object",
         "properties" : {
-          "alarmType" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "name" : "type",
-              "attribute" : true
-            }
-          },
           "id" : {
             "type" : "integer",
             "format" : "int32",
@@ -11221,51 +11212,18 @@
               "attribute" : true
             }
           },
-          "stickyMemo" : {
-            "$ref" : "#/components/schemas/OnmsMemo"
-          },
-          "reductionKeyMemo" : {
-            "$ref" : "#/components/schemas/OnmsReductionKeyMemo"
-          },
-          "reductionKey" : {
+          "type" : {
             "type" : "string",
-            "example" : null
-          },
-          "ackId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "relatedAlarmIds" : {
-            "uniqueItems" : true,
-            "type" : "array",
             "example" : null,
-            "items" : {
-              "type" : "integer",
-              "format" : "int32",
-              "example" : null
-            }
+            "enum" : [ "Unspecified", "Alarm", "Notification" ]
           },
-          "situation" : {
-            "type" : "boolean",
-            "example" : null
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
           },
-          "ackUser" : {
+          "severity" : {
             "type" : "string",
-            "example" : null
-          },
-          "ackTime" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null
-          },
-          "relatedAlarms" : {
-            "uniqueItems" : true,
-            "type" : "array",
             "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsAlarm"
-            }
+            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
           },
           "ipAddr" : {
             "type" : "object",
@@ -11379,19 +11337,56 @@
               "attribute" : true
             }
           },
-          "severity" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
-          },
           "distPoller" : {
             "$ref" : "#/components/schemas/OnmsMonitoringSystem"
           },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
           },
-          "qosAlarmState" : {
+          "ackUser" : {
             "type" : "string",
+            "example" : null
+          },
+          "ackTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null
+          },
+          "relatedAlarms" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsAlarm"
+            }
+          },
+          "ackId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "stickyMemo" : {
+            "$ref" : "#/components/schemas/OnmsMemo"
+          },
+          "reductionKeyMemo" : {
+            "$ref" : "#/components/schemas/OnmsReductionKeyMemo"
+          },
+          "reductionKey" : {
+            "type" : "string",
+            "example" : null
+          },
+          "relatedAlarmIds" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "integer",
+              "format" : "int32",
+              "example" : null
+            }
+          },
+          "situation" : {
+            "type" : "boolean",
             "example" : null
           },
           "alarmAckUser" : {
@@ -11429,6 +11424,15 @@
             "type" : "string",
             "format" : "date-time",
             "example" : null
+          },
+          "alarmType" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "name" : "type",
+              "attribute" : true
+            }
           },
           "severityLabel" : {
             "type" : "string",
@@ -11534,6 +11538,10 @@
             "format" : "int32",
             "example" : null
           },
+          "qosAlarmState" : {
+            "type" : "string",
+            "example" : null
+          },
           "firstAutomationTime" : {
             "type" : "string",
             "format" : "date-time",
@@ -11585,14 +11593,6 @@
             "type" : "string",
             "format" : "date-time",
             "example" : null
-          },
-          "type" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "Unspecified", "Alarm", "Notification" ]
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
           }
         },
         "example" : null,
@@ -11613,7 +11613,7 @@
               "$ref" : "#/components/schemas/OnmsAlarm"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -11629,7 +11629,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -11689,11 +11689,16 @@
       "OnmsAssetRecord" : {
         "type" : "object",
         "properties" : {
-          "category" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "state" : {
             "type" : "string",
             "example" : null
           },
-          "password" : {
+          "slot" : {
             "type" : "string",
             "example" : null
           },
@@ -11701,9 +11706,27 @@
             "type" : "string",
             "example" : null
           },
-          "id" : {
-            "type" : "integer",
-            "format" : "int32",
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
+          },
+          "country" : {
+            "type" : "string",
+            "example" : null
+          },
+          "region" : {
+            "type" : "string",
+            "example" : null
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : null
+          },
+          "category" : {
+            "type" : "string",
+            "example" : null
+          },
+          "password" : {
+            "type" : "string",
             "example" : null
           },
           "operatingSystem" : {
@@ -11894,10 +11917,6 @@
             "type" : "string",
             "example" : null
           },
-          "country" : {
-            "type" : "string",
-            "example" : null
-          },
           "longitude" : {
             "type" : "number",
             "format" : "double",
@@ -11928,10 +11947,6 @@
             "type" : "string",
             "example" : null
           },
-          "slot" : {
-            "type" : "string",
-            "example" : null
-          },
           "maintContractNumber" : {
             "type" : "string",
             "example" : null
@@ -11947,21 +11962,6 @@
           "connection" : {
             "type" : "string",
             "example" : null
-          },
-          "state" : {
-            "type" : "string",
-            "example" : null
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
-          },
-          "region" : {
-            "type" : "string",
-            "example" : null
-          },
-          "comment" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -11972,6 +11972,13 @@
       "OnmsCategory" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
           "id" : {
             "type" : "integer",
             "format" : "int32",
@@ -11994,13 +12001,6 @@
               "xml" : {
                 "name" : "tag"
               }
-            }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
             }
           }
         },
@@ -12342,14 +12342,6 @@
             "type" : "string",
             "example" : null
           },
-          "severityLabel" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "severity",
-              "attribute" : true
-            }
-          },
           "eventParametersFromEvent" : {
             "$ref" : "#/components/schemas/Event"
           },
@@ -12359,6 +12351,14 @@
             "example" : null,
             "items" : {
               "$ref" : "#/components/schemas/OnmsEventParameter"
+            }
+          },
+          "severityLabel" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "severity",
+              "attribute" : true
             }
           }
         },
@@ -12409,6 +12409,14 @@
       "OnmsGeolocation" : {
         "type" : "object",
         "properties" : {
+          "state" : {
+            "type" : "string",
+            "example" : null
+          },
+          "country" : {
+            "type" : "string",
+            "example" : null
+          },
           "address1" : {
             "type" : "string",
             "example" : null
@@ -12425,10 +12433,6 @@
             "type" : "string",
             "example" : null
           },
-          "country" : {
-            "type" : "string",
-            "example" : null
-          },
           "longitude" : {
             "type" : "number",
             "format" : "double",
@@ -12438,10 +12442,6 @@
             "type" : "number",
             "format" : "double",
             "example" : null
-          },
-          "state" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null
@@ -12449,6 +12449,9 @@
       "OnmsIpInterface" : {
         "type" : "object",
         "properties" : {
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
+          },
           "lastIngressFlow" : {
             "type" : "string",
             "format" : "date-time",
@@ -12524,6 +12527,17 @@
             },
             "example" : null
           },
+          "snmpInterface" : {
+            "$ref" : "#/components/schemas/OnmsSnmpInterface"
+          },
+          "lastEgressFlow" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
           "down" : {
             "type" : "boolean",
             "example" : null,
@@ -12545,17 +12559,6 @@
             "example" : null,
             "xml" : {
               "name" : "id",
-              "attribute" : true
-            }
-          },
-          "snmpInterface" : {
-            "$ref" : "#/components/schemas/OnmsSnmpInterface"
-          },
-          "lastEgressFlow" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null,
-            "xml" : {
               "attribute" : true
             }
           },
@@ -12595,9 +12598,6 @@
             "xml" : {
               "attribute" : true
             }
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
           }
         },
         "example" : null,
@@ -12613,11 +12613,7 @@
             "format" : "int32",
             "example" : null
           },
-          "author" : {
-            "type" : "string",
-            "example" : null
-          },
-          "updated" : {
+          "created" : {
             "type" : "string",
             "format" : "date-time",
             "example" : null
@@ -12626,7 +12622,11 @@
             "type" : "string",
             "example" : null
           },
-          "created" : {
+          "author" : {
+            "type" : "string",
+            "example" : null
+          },
+          "updated" : {
             "type" : "string",
             "format" : "date-time",
             "example" : null
@@ -12661,17 +12661,17 @@
       "OnmsMonitoredService" : {
         "type" : "object",
         "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
           "source" : {
             "type" : "string",
             "example" : null,
             "xml" : {
               "attribute" : true
             }
-          },
-          "id" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
           },
           "metaData" : {
             "type" : "array",
@@ -12712,10 +12712,6 @@
             "$ref" : "#/components/schemas/OnmsIpInterface"
           },
           "ipAddressAsString" : {
-            "type" : "string",
-            "example" : null
-          },
-          "foreignId" : {
             "type" : "string",
             "example" : null
           },
@@ -12784,6 +12780,10 @@
                 "example" : null
               }
             },
+            "example" : null
+          },
+          "foreignId" : {
+            "type" : "string",
             "example" : null
           },
           "down" : {
@@ -12870,6 +12870,14 @@
       "OnmsMonitoringLocation" : {
         "type" : "object",
         "properties" : {
+          "priority" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
           "locationName" : {
             "type" : "string",
             "example" : null,
@@ -12922,14 +12930,6 @@
                 "name" : "tag"
               }
             }
-          },
-          "priority" : {
-            "type" : "integer",
-            "format" : "int64",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
           }
         },
         "example" : null,
@@ -12955,6 +12955,14 @@
           },
           "location" : {
             "$ref" : "#/components/schemas/OnmsMonitoringLocation"
+          },
+          "type" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            },
+            "enum" : [ "A", "D", " " ]
           },
           "operatingSystem" : {
             "type" : "string",
@@ -13000,34 +13008,6 @@
           "assetRecord" : {
             "$ref" : "#/components/schemas/OnmsAssetRecord"
           },
-          "categories" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsCategory"
-            }
-          },
-          "sysContact" : {
-            "type" : "string",
-            "example" : null
-          },
-          "sysDescription" : {
-            "type" : "string",
-            "example" : null
-          },
-          "sysLocation" : {
-            "type" : "string",
-            "example" : null
-          },
-          "sysName" : {
-            "type" : "string",
-            "example" : null
-          },
-          "sysObjectId" : {
-            "type" : "string",
-            "example" : null
-          },
           "labelSource" : {
             "type" : "string",
             "example" : null,
@@ -13045,6 +13025,14 @@
             "example" : null,
             "xml" : {
               "name" : "netBIOSDomainName"
+            }
+          },
+          "categories" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsCategory"
             }
           },
           "createTime" : {
@@ -13065,13 +13053,25 @@
             "format" : "date-time",
             "example" : null
           },
-          "type" : {
+          "sysContact" : {
             "type" : "string",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            },
-            "enum" : [ "A", "D", " " ]
+            "example" : null
+          },
+          "sysDescription" : {
+            "type" : "string",
+            "example" : null
+          },
+          "sysLocation" : {
+            "type" : "string",
+            "example" : null
+          },
+          "sysName" : {
+            "type" : "string",
+            "example" : null
+          },
+          "sysObjectId" : {
+            "type" : "string",
+            "example" : null
           }
         },
         "example" : null,
@@ -13083,27 +13083,21 @@
         "required" : [ "eventId" ],
         "type" : "object",
         "properties" : {
-          "notifyId" : {
-            "type" : "integer",
-            "format" : "int32",
+          "type" : {
+            "type" : "string",
             "example" : null,
-            "xml" : {
-              "name" : "id",
-              "attribute" : true
-            }
+            "enum" : [ "Unspecified", "Alarm", "Notification" ]
           },
-          "ackId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
           },
-          "ackUser" : {
+          "severity" : {
             "type" : "string",
-            "example" : null
+            "example" : null,
+            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
           },
-          "ackTime" : {
+          "subject" : {
             "type" : "string",
-            "format" : "date-time",
             "example" : null
           },
           "event" : {
@@ -13185,19 +13179,37 @@
             },
             "example" : null
           },
-          "subject" : {
-            "type" : "string",
-            "example" : null
-          },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
           },
-          "severityLabel" : {
+          "notifyId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "name" : "id",
+              "attribute" : true
+            }
+          },
+          "ackUser" : {
+            "type" : "string",
+            "example" : null
+          },
+          "ackTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null
+          },
+          "ackId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "eventUei" : {
             "type" : "string",
             "example" : null,
             "xml" : {
-              "name" : "severity",
-              "attribute" : true
+              "name" : "uei"
             }
           },
           "textMsg" : {
@@ -13256,25 +13268,13 @@
               "name" : "notificationName"
             }
           },
-          "eventUei" : {
+          "severityLabel" : {
             "type" : "string",
             "example" : null,
             "xml" : {
-              "name" : "uei"
+              "name" : "severity",
+              "attribute" : true
             }
-          },
-          "type" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "Unspecified", "Alarm", "Notification" ]
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
-          },
-          "severity" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
           }
         },
         "example" : null,
@@ -13285,9 +13285,6 @@
       "OnmsOutage" : {
         "type" : "object",
         "properties" : {
-          "monitoredService" : {
-            "$ref" : "#/components/schemas/OnmsMonitoredService"
-          },
           "id" : {
             "type" : "integer",
             "format" : "int32",
@@ -13295,6 +13292,9 @@
             "xml" : {
               "attribute" : true
             }
+          },
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
           },
           "nodeId" : {
             "type" : "integer",
@@ -13314,10 +13314,6 @@
             "example" : null
           },
           "ipAddressAsString" : {
-            "type" : "string",
-            "example" : null
-          },
-          "foreignId" : {
             "type" : "string",
             "example" : null
           },
@@ -13388,6 +13384,10 @@
             },
             "example" : null
           },
+          "foreignId" : {
+            "type" : "string",
+            "example" : null
+          },
           "serviceType" : {
             "$ref" : "#/components/schemas/OnmsServiceType"
           },
@@ -13395,6 +13395,9 @@
             "type" : "integer",
             "format" : "int32",
             "example" : null
+          },
+          "monitoredService" : {
+            "$ref" : "#/components/schemas/OnmsMonitoredService"
           },
           "ifLostService" : {
             "type" : "string",
@@ -13423,9 +13426,6 @@
           },
           "perspective" : {
             "$ref" : "#/components/schemas/OnmsMonitoringLocation"
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
           }
         },
         "example" : null,
@@ -13445,11 +13445,7 @@
             "format" : "int32",
             "example" : null
           },
-          "author" : {
-            "type" : "string",
-            "example" : null
-          },
-          "updated" : {
+          "created" : {
             "type" : "string",
             "format" : "date-time",
             "example" : null
@@ -13458,7 +13454,11 @@
             "type" : "string",
             "example" : null
           },
-          "created" : {
+          "author" : {
+            "type" : "string",
+            "example" : null
+          },
+          "updated" : {
             "type" : "string",
             "format" : "date-time",
             "example" : null
@@ -13472,6 +13472,10 @@
       "OnmsServiceType" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "id" : {
             "type" : "integer",
             "format" : "int32",
@@ -13479,10 +13483,6 @@
             "xml" : {
               "attribute" : true
             }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -13493,6 +13493,88 @@
       "OnmsSnmpInterface" : {
         "type" : "object",
         "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
+          },
+          "lastIngressFlow" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "nodeId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "collect" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "collectFlag",
+              "attribute" : true
+            }
+          },
+          "ifType" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "hasFlows" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "lastEgressFlow" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "lastCapsdPoll" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : null
+          },
+          "ipInterfaces" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsIpInterface"
+            }
+          },
+          "hasIngressFlows" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "hasEgressFlows" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "ifIndex" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "ifAlias" : {
+            "type" : "string",
+            "example" : null
+          },
           "ifDescr" : {
             "type" : "string",
             "example" : null
@@ -13533,85 +13615,6 @@
             "format" : "date-time",
             "example" : null
           },
-          "id" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "lastIngressFlow" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "nodeId" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "collect" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "collectFlag",
-              "attribute" : true
-            }
-          },
-          "ifType" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "ipInterfaces" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsIpInterface"
-            }
-          },
-          "ifIndex" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "hasFlows" : {
-            "type" : "boolean",
-            "example" : null
-          },
-          "lastEgressFlow" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "hasIngressFlows" : {
-            "type" : "boolean",
-            "example" : null
-          },
-          "hasEgressFlows" : {
-            "type" : "boolean",
-            "example" : null
-          },
-          "lastCapsdPoll" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : null
-          },
-          "ifAlias" : {
-            "type" : "string",
-            "example" : null
-          },
           "primaryIpInterface" : {
             "$ref" : "#/components/schemas/OnmsIpInterface"
           },
@@ -13638,9 +13641,6 @@
               "name" : "poll",
               "attribute" : true
             }
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
           }
         },
         "example" : null,
@@ -13695,15 +13695,15 @@
       "Parm" : {
         "type" : "object",
         "properties" : {
-          "parmName" : {
-            "type" : "string",
-            "example" : null
-          },
           "value" : {
             "$ref" : "#/components/schemas/Value"
           },
           "valid" : {
             "type" : "boolean",
+            "example" : null
+          },
+          "parmName" : {
+            "type" : "string",
             "example" : null
           }
         },
@@ -13715,17 +13715,17 @@
       "Snmp" : {
         "type" : "object",
         "properties" : {
-          "timeStamp" : {
-            "type" : "integer",
-            "format" : "int64",
-            "example" : null
-          },
           "id" : {
             "type" : "string",
             "example" : null
           },
           "version" : {
             "type" : "string",
+            "example" : null
+          },
+          "timeStamp" : {
+            "type" : "integer",
+            "format" : "int64",
             "example" : null
           },
           "generic" : {
@@ -13759,11 +13759,11 @@
       "Tticket" : {
         "type" : "object",
         "properties" : {
-          "content" : {
+          "state" : {
             "type" : "string",
             "example" : null
           },
-          "state" : {
+          "content" : {
             "type" : "string",
             "example" : null
           }
@@ -13780,12 +13780,12 @@
             "type" : "string",
             "example" : null
           },
-          "updateOnReduction" : {
-            "type" : "boolean",
-            "example" : null
-          },
           "valueExpression" : {
             "type" : "string",
+            "example" : null
+          },
+          "updateOnReduction" : {
+            "type" : "boolean",
             "example" : null
           }
         },
@@ -13797,20 +13797,20 @@
       "Value" : {
         "type" : "object",
         "properties" : {
-          "content" : {
+          "type" : {
             "type" : "string",
             "example" : null
           },
-          "expand" : {
-            "type" : "boolean",
-            "example" : null
-          },
-          "type" : {
+          "content" : {
             "type" : "string",
             "example" : null
           },
           "encoding" : {
             "type" : "string",
+            "example" : null
+          },
+          "expand" : {
+            "type" : "boolean",
             "example" : null
           }
         },
@@ -13840,13 +13840,13 @@
       "AlarmStatistics" : {
         "type" : "object",
         "properties" : {
-          "unacknowledgedCount" : {
-            "type" : "integer",
-            "format" : "int32",
+          "severity" : {
+            "type" : "string",
             "example" : null,
             "xml" : {
               "attribute" : true
-            }
+            },
+            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
           },
           "acknowledgedCount" : {
             "type" : "integer",
@@ -13908,13 +13908,13 @@
               "attribute" : true
             }
           },
-          "severity" : {
-            "type" : "string",
+          "unacknowledgedCount" : {
+            "type" : "integer",
+            "format" : "int32",
             "example" : null,
             "xml" : {
               "attribute" : true
-            },
-            "enum" : [ "INDETERMINATE", "CLEARED", "NORMAL", "WARNING", "MINOR", "MAJOR", "CRITICAL" ]
+            }
           }
         },
         "example" : null,
@@ -13958,7 +13958,7 @@
               }
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -13974,7 +13974,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14018,13 +14018,67 @@
       "Category" : {
         "type" : "object",
         "properties" : {
-          "normalThreshold" : {
+          "name" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
+          "value" : {
             "type" : "number",
             "format" : "double",
             "example" : null,
             "xml" : {
-              "name" : "normal-threshold",
-              "attribute" : true
+              "name" : "availability"
+            }
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : null
+          },
+          "servicePercentage" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : null,
+            "xml" : {
+              "name" : "service-percentage"
+            }
+          },
+          "serviceDownCount" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : null,
+            "xml" : {
+              "name" : "service-down-count"
+            }
+          },
+          "outageClass" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "outage-class"
+            }
+          },
+          "availClass" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "availability-class"
+            }
+          },
+          "outageText" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "outage-text"
+            }
+          },
+          "availText" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "name" : "availability-text"
             }
           },
           "warningThreshold" : {
@@ -14033,6 +14087,15 @@
             "example" : null,
             "xml" : {
               "name" : "warning-threshold",
+              "attribute" : true
+            }
+          },
+          "normalThreshold" : {
+            "type" : "number",
+            "format" : "double",
+            "example" : null,
+            "xml" : {
+              "name" : "normal-threshold",
               "attribute" : true
             }
           },
@@ -14059,69 +14122,6 @@
             "xml" : {
               "name" : "last-updated"
             }
-          },
-          "servicePercentage" : {
-            "type" : "number",
-            "format" : "double",
-            "example" : null,
-            "xml" : {
-              "name" : "service-percentage"
-            }
-          },
-          "outageText" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "outage-text"
-            }
-          },
-          "availText" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "availability-text"
-            }
-          },
-          "serviceDownCount" : {
-            "type" : "integer",
-            "format" : "int64",
-            "example" : null,
-            "xml" : {
-              "name" : "service-down-count"
-            }
-          },
-          "outageClass" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "outage-class"
-            }
-          },
-          "availClass" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "name" : "availability-class"
-            }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
-          },
-          "value" : {
-            "type" : "number",
-            "format" : "double",
-            "example" : null,
-            "xml" : {
-              "name" : "availability"
-            }
-          },
-          "comment" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14149,7 +14149,7 @@
               "$ref" : "#/components/schemas/AvailabilityNode"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14165,7 +14165,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14199,7 +14199,7 @@
               "$ref" : "#/components/schemas/OnmsCategory"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14215,7 +14215,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14232,6 +14232,10 @@
       "EmailDestination" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "filters" : {
             "type" : "array",
             "example" : null,
@@ -14241,10 +14245,6 @@
           },
           "firstOccurrenceOnly" : {
             "type" : "boolean",
-            "example" : null
-          },
-          "name" : {
-            "type" : "string",
             "example" : null
           }
         },
@@ -14256,12 +14256,20 @@
       "EmailFilter" : {
         "type" : "object",
         "properties" : {
-          "body" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "from" : {
             "type" : "string",
             "example" : null
           },
           "enabled" : {
             "type" : "boolean",
+            "example" : null
+          },
+          "subject" : {
+            "type" : "string",
             "example" : null
           },
           "rule" : {
@@ -14272,15 +14280,7 @@
             "type" : "string",
             "example" : null
           },
-          "subject" : {
-            "type" : "string",
-            "example" : null
-          },
-          "from" : {
-            "type" : "string",
-            "example" : null
-          },
-          "name" : {
+          "body" : {
             "type" : "string",
             "example" : null
           }
@@ -14293,13 +14293,13 @@
       "EmailNorthbounderConfig" : {
         "type" : "object",
         "properties" : {
+          "enabled" : {
+            "type" : "boolean",
+            "example" : null
+          },
           "queueSize" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : null
-          },
-          "enabled" : {
-            "type" : "boolean",
             "example" : null
           },
           "batchSize" : {
@@ -14344,15 +14344,15 @@
       "End2endMailConfig" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "sendmailConfigName" : {
             "type" : "string",
             "example" : null
           },
           "readmailConfigName" : {
-            "type" : "string",
-            "example" : null
-          },
-          "name" : {
             "type" : "string",
             "example" : null
           }
@@ -14384,6 +14384,27 @@
       "ReadmailConfig" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "debug" : {
+            "type" : "boolean",
+            "example" : null
+          },
+          "javamailProperties" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/JavamailProperty"
+            }
+          },
+          "readmailHost" : {
+            "$ref" : "#/components/schemas/ReadmailHost"
+          },
+          "userAuth" : {
+            "$ref" : "#/components/schemas/UserAuth"
+          },
           "mailFolder" : {
             "type" : "string",
             "example" : null
@@ -14396,27 +14417,6 @@
           "deleteAllMail" : {
             "type" : "boolean",
             "example" : null
-          },
-          "readmailHost" : {
-            "$ref" : "#/components/schemas/ReadmailHost"
-          },
-          "userAuth" : {
-            "$ref" : "#/components/schemas/UserAuth"
-          },
-          "javamailProperties" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/JavamailProperty"
-            }
-          },
-          "debug" : {
-            "type" : "boolean",
-            "example" : null
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14428,6 +14428,10 @@
       "ReadmailHost" : {
         "type" : "object",
         "properties" : {
+          "host" : {
+            "type" : "string",
+            "example" : null
+          },
           "port" : {
             "type" : "integer",
             "format" : "int32",
@@ -14435,10 +14439,6 @@
           },
           "readmailProtocol" : {
             "$ref" : "#/components/schemas/ReadmailProtocol"
-          },
-          "host" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14490,13 +14490,13 @@
       "SendmailConfig" : {
         "type" : "object",
         "properties" : {
-          "attemptInterval" : {
-            "type" : "integer",
-            "format" : "int64",
+          "name" : {
+            "type" : "string",
             "example" : null
           },
-          "userAuth" : {
-            "$ref" : "#/components/schemas/UserAuth"
+          "debug" : {
+            "type" : "boolean",
+            "example" : null
           },
           "javamailProperties" : {
             "type" : "array",
@@ -14505,9 +14505,8 @@
               "$ref" : "#/components/schemas/JavamailProperty"
             }
           },
-          "debug" : {
-            "type" : "boolean",
-            "example" : null
+          "userAuth" : {
+            "$ref" : "#/components/schemas/UserAuth"
           },
           "useAuthentication" : {
             "type" : "boolean",
@@ -14526,8 +14525,9 @@
           "sendmailMessage" : {
             "$ref" : "#/components/schemas/SendmailMessage"
           },
-          "name" : {
-            "type" : "string",
+          "attemptInterval" : {
+            "type" : "integer",
+            "format" : "int64",
             "example" : null
           }
         },
@@ -14540,13 +14540,13 @@
       "SendmailHost" : {
         "type" : "object",
         "properties" : {
+          "host" : {
+            "type" : "string",
+            "example" : null
+          },
           "port" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : null
-          },
-          "host" : {
-            "type" : "string",
             "example" : null
           }
         },
@@ -14559,11 +14559,7 @@
       "SendmailMessage" : {
         "type" : "object",
         "properties" : {
-          "body" : {
-            "type" : "string",
-            "example" : null
-          },
-          "to" : {
+          "from" : {
             "type" : "string",
             "example" : null
           },
@@ -14571,11 +14567,15 @@
             "type" : "string",
             "example" : null
           },
-          "from" : {
+          "to" : {
             "type" : "string",
             "example" : null
           },
           "replyTo" : {
+            "type" : "string",
+            "example" : null
+          },
+          "body" : {
             "type" : "string",
             "example" : null
           }
@@ -14589,10 +14589,6 @@
       "SendmailProtocol" : {
         "type" : "object",
         "properties" : {
-          "transport" : {
-            "type" : "string",
-            "example" : null
-          },
           "quitWait" : {
             "type" : "boolean",
             "example" : null
@@ -14602,6 +14598,10 @@
             "example" : null
           },
           "charSet" : {
+            "type" : "string",
+            "example" : null
+          },
+          "transport" : {
             "type" : "string",
             "example" : null
           },
@@ -14631,6 +14631,10 @@
       "SnmpTrapMapping" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "rule" : {
             "type" : "string",
             "example" : null
@@ -14655,10 +14659,6 @@
             "items" : {
               "$ref" : "#/components/schemas/VarbindMapping"
             }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14669,6 +14669,10 @@
       "SnmpTrapMappingGroup" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "rule" : {
             "type" : "string",
             "example" : null
@@ -14679,10 +14683,6 @@
             "items" : {
               "$ref" : "#/components/schemas/SnmpTrapMapping"
             }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14693,6 +14693,10 @@
       "SnmpTrapSink" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "port" : {
             "type" : "integer",
             "format" : "int32",
@@ -14722,19 +14726,15 @@
               "example" : null
             }
           },
+          "community" : {
+            "type" : "string",
+            "example" : null
+          },
           "firstOccurrenceOnly" : {
             "type" : "boolean",
             "example" : null
           },
           "v1AgentIpAddress" : {
-            "type" : "string",
-            "example" : null
-          },
-          "community" : {
-            "type" : "string",
-            "example" : null
-          },
-          "name" : {
             "type" : "string",
             "example" : null
           }
@@ -14747,19 +14747,6 @@
       "VarbindMapping" : {
         "type" : "object",
         "properties" : {
-          "max" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "instance" : {
-            "type" : "string",
-            "example" : null
-          },
-          "oid" : {
-            "type" : "string",
-            "example" : null
-          },
           "name" : {
             "type" : "string",
             "example" : null
@@ -14768,10 +14755,23 @@
             "type" : "string",
             "example" : null
           },
+          "instance" : {
+            "type" : "string",
+            "example" : null
+          },
           "type" : {
             "type" : "string",
             "example" : null,
             "enum" : [ "TYPE_SNMP_OCTET_STRING", "TYPE_SNMP_INT32", "TYPE_SNMP_NULL", "TYPE_SNMP_OBJECT_IDENTIFIER", "TYPE_SNMP_IPADDRESS", "TYPE_SNMP_TIMETICKS", "TYPE_SNMP_COUNTER32", "TYPE_SNMP_GAUGE32", "TYPE_SNMP_OPAQUE", "TYPE_SNMP_COUNTER64" ]
+          },
+          "max" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "oid" : {
+            "type" : "string",
+            "example" : null
           }
         },
         "example" : null,
@@ -14782,13 +14782,13 @@
       "SnmpTrapNorthbounderConfig" : {
         "type" : "object",
         "properties" : {
+          "enabled" : {
+            "type" : "boolean",
+            "example" : null
+          },
           "queueSize" : {
             "type" : "integer",
             "format" : "int32",
-            "example" : null
-          },
-          "enabled" : {
-            "type" : "boolean",
             "example" : null
           },
           "batchSize" : {
@@ -14833,6 +14833,24 @@
       "SyslogDestination" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "host" : {
+            "type" : "string",
+            "example" : null
+          },
+          "port" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : null
+          },
+          "protocol" : {
+            "type" : "string",
+            "example" : null,
+            "enum" : [ "UDP", "TCP" ]
+          },
           "filters" : {
             "type" : "array",
             "example" : null,
@@ -14844,16 +14862,6 @@
             "type" : "string",
             "example" : null,
             "enum" : [ "KERN", "USER", "MAIL", "DAEMON", "AUTH", "SYSLOG", "LPR", "NEWS", "UUCP", "CRON", "AUTHPRIV", "FTP", "LOCAL0", "LOCAL1", "LOCAL2", "LOCAL3", "LOCAL4", "LOCAL5", "LOCAL6", "LOCAL7" ]
-          },
-          "port" : {
-            "type" : "integer",
-            "format" : "int32",
-            "example" : null
-          },
-          "protocol" : {
-            "type" : "string",
-            "example" : null,
-            "enum" : [ "UDP", "TCP" ]
           },
           "charSet" : {
             "type" : "string",
@@ -14879,14 +14887,6 @@
           "truncateMessage" : {
             "type" : "boolean",
             "example" : null
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
-          },
-          "host" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null,
@@ -14897,6 +14897,10 @@
       "SyslogFilter" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
           "enabled" : {
             "type" : "boolean",
             "example" : null
@@ -14906,10 +14910,6 @@
             "example" : null
           },
           "messageFormat" : {
-            "type" : "string",
-            "example" : null
-          },
-          "name" : {
             "type" : "string",
             "example" : null
           }
@@ -14922,6 +14922,10 @@
       "SyslogNorthbounderConfig" : {
         "type" : "object",
         "properties" : {
+          "enabled" : {
+            "type" : "boolean",
+            "example" : null
+          },
           "queueSize" : {
             "type" : "integer",
             "format" : "int32",
@@ -14929,10 +14933,6 @@
           },
           "dateFormat" : {
             "type" : "string",
-            "example" : null
-          },
-          "enabled" : {
-            "type" : "boolean",
             "example" : null
           },
           "batchSize" : {
@@ -14983,7 +14983,7 @@
               "$ref" : "#/components/schemas/OnmsEvent"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -14999,7 +14999,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15055,6 +15055,18 @@
                   }
                 },
                 "writeOnly" : true,
+                "example" : null
+              },
+              "name" : {
+                "type" : "string",
+                "example" : null
+              },
+              "inputStream" : {
+                "type" : "object",
+                "example" : null
+              },
+              "content" : {
+                "type" : "object",
                 "example" : null
               },
               "dataSource" : {
@@ -15189,18 +15201,6 @@
                   "example" : null
                 }
               },
-              "name" : {
-                "type" : "string",
-                "example" : null
-              },
-              "inputStream" : {
-                "type" : "object",
-                "example" : null
-              },
-              "content" : {
-                "type" : "object",
-                "example" : null
-              },
               "contentType" : {
                 "type" : "string",
                 "example" : null
@@ -15252,16 +15252,16 @@
             "type" : "string",
             "example" : null
           },
-          "filename" : {
-            "type" : "string",
-            "example" : null
-          },
           "parameters" : {
             "type" : "object",
             "additionalProperties" : {
               "type" : "string",
               "example" : null
             },
+            "example" : null
+          },
+          "filename" : {
+            "type" : "string",
             "example" : null
           }
         },
@@ -15284,7 +15284,7 @@
               }
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15300,7 +15300,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15361,7 +15361,7 @@
               "$ref" : "#/components/schemas/SimplePluginConfig"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15377,7 +15377,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15431,27 +15431,6 @@
       "DetectorWrapper" : {
         "type" : "object",
         "properties" : {
-          "availableParameterKeys" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "type" : "string",
-              "example" : null
-            }
-          },
-          "parameterMap" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string",
-              "example" : null
-            },
-            "example" : null
-          },
-          "pluginClass" : {
-            "type" : "string",
-            "example" : null
-          },
           "name" : {
             "type" : "string",
             "example" : null
@@ -15463,6 +15442,27 @@
             "items" : {
               "$ref" : "#/components/schemas/PluginParameter"
             }
+          },
+          "pluginClass" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parameterMap" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "example" : null
+            },
+            "example" : null
+          },
+          "availableParameterKeys" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "string",
+              "example" : null
+            }
           }
         },
         "example" : null,
@@ -15473,14 +15473,13 @@
       "PluginConfig" : {
         "type" : "object",
         "properties" : {
-          "availableParameterKeys" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "type" : "string",
-              "example" : null
-            }
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "pluginClass" : {
+            "type" : "string",
+            "example" : null
           },
           "parameterMap" : {
             "type" : "object",
@@ -15490,13 +15489,14 @@
             },
             "example" : null
           },
-          "pluginClass" : {
-            "type" : "string",
-            "example" : null
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
+          "availableParameterKeys" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "string",
+              "example" : null
+            }
           }
         },
         "example" : null,
@@ -15507,6 +15507,14 @@
       "PluginParameter" : {
         "type" : "object",
         "properties" : {
+          "value" : {
+            "type" : "string",
+            "example" : null
+          },
+          "key" : {
+            "type" : "string",
+            "example" : null
+          },
           "pluginConfig" : {
             "$ref" : "#/components/schemas/PluginConfig"
           },
@@ -15518,14 +15526,6 @@
               "type" : "string",
               "example" : null
             }
-          },
-          "key" : {
-            "type" : "string",
-            "example" : null
-          },
-          "value" : {
-            "type" : "string",
-            "example" : null
           }
         },
         "example" : null
@@ -15564,12 +15564,12 @@
       "ForeignSource" : {
         "type" : "object",
         "properties" : {
-          "scanInterval" : {
-            "$ref" : "#/components/schemas/Duration"
-          },
-          "dateStamp" : {
+          "name" : {
             "type" : "string",
-            "format" : "date-time",
+            "example" : null
+          },
+          "default" : {
+            "type" : "boolean",
             "example" : null
           },
           "detectorNames" : {
@@ -15578,13 +15578,6 @@
             "items" : {
               "type" : "string",
               "example" : null
-            }
-          },
-          "policies" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/PluginConfig"
             }
           },
           "detectors" : {
@@ -15599,13 +15592,20 @@
             "format" : "date-time",
             "example" : null
           },
-          "name" : {
+          "scanInterval" : {
+            "$ref" : "#/components/schemas/Duration"
+          },
+          "dateStamp" : {
             "type" : "string",
+            "format" : "date-time",
             "example" : null
           },
-          "default" : {
-            "type" : "boolean",
-            "example" : null
+          "policies" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/PluginConfig"
+            }
           }
         },
         "example" : null,
@@ -15616,27 +15616,6 @@
       "PolicyWrapper" : {
         "type" : "object",
         "properties" : {
-          "availableParameterKeys" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "type" : "string",
-              "example" : null
-            }
-          },
-          "parameterMap" : {
-            "type" : "object",
-            "additionalProperties" : {
-              "type" : "string",
-              "example" : null
-            },
-            "example" : null
-          },
-          "pluginClass" : {
-            "type" : "string",
-            "example" : null
-          },
           "name" : {
             "type" : "string",
             "example" : null
@@ -15648,6 +15627,27 @@
             "items" : {
               "$ref" : "#/components/schemas/PluginParameter"
             }
+          },
+          "pluginClass" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parameterMap" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string",
+              "example" : null
+            },
+            "example" : null
+          },
+          "availableParameterKeys" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "type" : "string",
+              "example" : null
+            }
           }
         },
         "example" : null,
@@ -15658,19 +15658,19 @@
       "ForeignSourceCollection" : {
         "type" : "object",
         "properties" : {
-          "foreignSources" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/ForeignSource"
-            }
-          },
           "count" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
             "xml" : {
               "attribute" : true
+            }
+          },
+          "foreignSources" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/ForeignSource"
             }
           }
         },
@@ -15682,19 +15682,19 @@
       "DetectorCollection" : {
         "type" : "object",
         "properties" : {
-          "detectors" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/PluginConfig"
-            }
-          },
           "count" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
             "xml" : {
               "attribute" : true
+            }
+          },
+          "detectors" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/PluginConfig"
             }
           }
         },
@@ -15706,19 +15706,19 @@
       "PolicyCollection" : {
         "type" : "object",
         "properties" : {
-          "policies" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/PluginConfig"
-            }
-          },
           "count" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
             "xml" : {
               "attribute" : true
+            }
+          },
+          "policies" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/PluginConfig"
             }
           }
         },
@@ -15751,7 +15751,7 @@
               }
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15767,7 +15767,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15808,7 +15808,7 @@
               "$ref" : "#/components/schemas/OnmsGroup"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15824,7 +15824,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15858,7 +15858,7 @@
               "$ref" : "#/components/schemas/OnmsUser"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15874,7 +15874,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -15891,6 +15891,20 @@
       "OnmsHwEntity" : {
         "type" : "object",
         "properties" : {
+          "node" : {
+            "$ref" : "#/components/schemas/OnmsNode"
+          },
+          "children" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "xml" : {
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsHwEntity"
+            }
+          },
           "entPhysicalName" : {
             "type" : "string",
             "example" : null
@@ -15988,17 +16002,6 @@
             "type" : "string",
             "example" : null
           },
-          "children" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "xml" : {
-              "wrapped" : true
-            },
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsHwEntity"
-            }
-          },
           "hwEntityAttributes" : {
             "uniqueItems" : true,
             "type" : "array",
@@ -16010,9 +16013,6 @@
             "items" : {
               "$ref" : "#/components/schemas/OnmsHwEntityAttribute"
             }
-          },
-          "node" : {
-            "$ref" : "#/components/schemas/OnmsNode"
           }
         },
         "example" : null,
@@ -16023,16 +16023,16 @@
       "OnmsHwEntityAlias" : {
         "type" : "object",
         "properties" : {
-          "oid" : {
-            "type" : "string",
+          "index" : {
+            "type" : "integer",
+            "format" : "int32",
             "example" : null,
             "xml" : {
               "attribute" : true
             }
           },
-          "index" : {
-            "type" : "integer",
-            "format" : "int32",
+          "oid" : {
+            "type" : "string",
             "example" : null,
             "xml" : {
               "attribute" : true
@@ -16047,6 +16047,13 @@
       "OnmsHwEntityAttribute" : {
         "type" : "object",
         "properties" : {
+          "value" : {
+            "type" : "string",
+            "example" : null,
+            "xml" : {
+              "attribute" : true
+            }
+          },
           "typeName" : {
             "type" : "string",
             "example" : null,
@@ -16070,13 +16077,6 @@
               "name" : "oid",
               "attribute" : true
             }
-          },
-          "value" : {
-            "type" : "string",
-            "example" : null,
-            "xml" : {
-              "attribute" : true
-            }
           }
         },
         "example" : null,
@@ -16087,17 +16087,18 @@
       "OnmsMonitoredServiceDetail" : {
         "type" : "object",
         "properties" : {
-          "statusCode" : {
+          "id" : {
             "type" : "string",
             "example" : null,
             "xml" : {
               "attribute" : true
             }
           },
-          "id" : {
-            "type" : "string",
+          "monitored" : {
+            "type" : "boolean",
             "example" : null,
             "xml" : {
+              "name" : "isMonitored",
               "attribute" : true
             }
           },
@@ -16191,19 +16192,18 @@
               "attribute" : true
             }
           },
-          "ipInterfaceId" : {
-            "type" : "integer",
-            "format" : "int32",
+          "statusCode" : {
+            "type" : "string",
             "example" : null,
             "xml" : {
               "attribute" : true
             }
           },
-          "monitored" : {
-            "type" : "boolean",
+          "ipInterfaceId" : {
+            "type" : "integer",
+            "format" : "int32",
             "example" : null,
             "xml" : {
-              "name" : "isMonitored",
               "attribute" : true
             }
           }
@@ -16226,7 +16226,7 @@
               "$ref" : "#/components/schemas/OnmsMonitoredServiceDetail"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16242,7 +16242,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16276,7 +16276,7 @@
               "$ref" : "#/components/schemas/KscReport"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16292,7 +16292,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16872,7 +16872,7 @@
               "$ref" : "#/components/schemas/OnmsMinion"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16888,7 +16888,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16915,7 +16915,7 @@
               "$ref" : "#/components/schemas/OnmsMonitoringLocation"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16931,7 +16931,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16958,7 +16958,7 @@
               "$ref" : "#/components/schemas/OnmsIpInterface"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -16974,7 +16974,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17001,7 +17001,7 @@
               "$ref" : "#/components/schemas/OnmsMonitoredService"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17017,7 +17017,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17044,7 +17044,7 @@
               "$ref" : "#/components/schemas/OnmsNode"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17060,7 +17060,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17087,7 +17087,7 @@
               "$ref" : "#/components/schemas/OnmsSnmpInterface"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17103,7 +17103,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17166,7 +17166,7 @@
               "$ref" : "#/components/schemas/OnmsNotification"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17182,7 +17182,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17209,7 +17209,7 @@
               "$ref" : "#/components/schemas/OnmsOutage"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17225,7 +17225,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17252,7 +17252,7 @@
               "$ref" : "#/components/schemas/Requisition"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17268,7 +17268,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17285,11 +17285,11 @@
       "PrimaryType" : {
         "type" : "object",
         "properties" : {
-          "charCode" : {
+          "code" : {
             "type" : "string",
             "example" : null
           },
-          "code" : {
+          "charCode" : {
             "type" : "string",
             "example" : null
           }
@@ -17341,15 +17341,15 @@
       "RequisitionMetaData" : {
         "type" : "object",
         "properties" : {
+          "value" : {
+            "type" : "string",
+            "example" : null
+          },
           "key" : {
             "type" : "string",
             "example" : null
           },
           "context" : {
-            "type" : "string",
-            "example" : null
-          },
-          "value" : {
             "type" : "string",
             "example" : null
           }
@@ -17362,22 +17362,14 @@
       "RequisitionNode" : {
         "type" : "object",
         "properties" : {
-          "assets" : {
+          "interfaces" : {
             "type" : "array",
             "example" : null,
             "items" : {
-              "$ref" : "#/components/schemas/RequisitionAsset"
+              "$ref" : "#/components/schemas/RequisitionInterface"
             }
           },
-          "parentForeignSource" : {
-            "type" : "string",
-            "example" : null
-          },
-          "parentForeignId" : {
-            "type" : "string",
-            "example" : null
-          },
-          "parentNodeLabel" : {
+          "location" : {
             "type" : "string",
             "example" : null
           },
@@ -17387,10 +17379,6 @@
             "items" : {
               "$ref" : "#/components/schemas/RequisitionCategory"
             }
-          },
-          "location" : {
-            "type" : "string",
-            "example" : null
           },
           "metaData" : {
             "type" : "array",
@@ -17402,13 +17390,6 @@
           "nodeLabel" : {
             "type" : "string",
             "example" : null
-          },
-          "interfaces" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/RequisitionInterface"
-            }
           },
           "foreignId" : {
             "type" : "string",
@@ -17435,6 +17416,25 @@
             "items" : {
               "$ref" : "#/components/schemas/RequisitionInterface"
             }
+          },
+          "assets" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/RequisitionAsset"
+            }
+          },
+          "parentForeignSource" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parentForeignId" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parentNodeLabel" : {
+            "type" : "string",
+            "example" : null
           },
           "interfaceCount" : {
             "type" : "integer",
@@ -17523,7 +17523,7 @@
               "$ref" : "#/components/schemas/RequisitionAsset"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17539,7 +17539,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17566,7 +17566,7 @@
               "$ref" : "#/components/schemas/RequisitionCategory"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17582,7 +17582,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17630,7 +17630,7 @@
               }
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17646,7 +17646,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17673,7 +17673,7 @@
               "$ref" : "#/components/schemas/DeployedRequisitionStats"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17689,7 +17689,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17716,7 +17716,7 @@
               "$ref" : "#/components/schemas/RequisitionInterface"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17732,7 +17732,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17759,7 +17759,7 @@
               "$ref" : "#/components/schemas/RequisitionNode"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17775,7 +17775,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17802,7 +17802,7 @@
               "$ref" : "#/components/schemas/RequisitionMonitoredService"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17818,7 +17818,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -17835,12 +17835,12 @@
       "OnmsAttribute" : {
         "type" : "object",
         "properties" : {
-          "resource" : {
-            "$ref" : "#/components/schemas/OnmsResource"
-          },
           "name" : {
             "type" : "string",
             "example" : null
+          },
+          "resource" : {
+            "$ref" : "#/components/schemas/OnmsResource"
           }
         },
         "example" : null
@@ -17852,6 +17852,44 @@
       "OnmsResource" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "parent" : {
+            "$ref" : "#/components/schemas/OnmsResource"
+          },
+          "id" : {
+            "$ref" : "#/components/schemas/ResourceId"
+          },
+          "path" : {
+            "$ref" : "#/components/schemas/ResourcePath"
+          },
+          "attributes" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsAttribute"
+            }
+          },
+          "label" : {
+            "type" : "string",
+            "example" : null
+          },
+          "resourceType" : {
+            "$ref" : "#/components/schemas/OnmsResourceType"
+          },
+          "entity" : {
+            "$ref" : "#/components/schemas/OnmsEntity"
+          },
+          "childResources" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/OnmsResource"
+            }
+          },
           "link" : {
             "type" : "string",
             "example" : null
@@ -17878,44 +17916,6 @@
               "example" : null
             },
             "example" : null
-          },
-          "label" : {
-            "type" : "string",
-            "example" : null
-          },
-          "resourceType" : {
-            "$ref" : "#/components/schemas/OnmsResourceType"
-          },
-          "entity" : {
-            "$ref" : "#/components/schemas/OnmsEntity"
-          },
-          "childResources" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsResource"
-            }
-          },
-          "name" : {
-            "type" : "string",
-            "example" : null
-          },
-          "parent" : {
-            "$ref" : "#/components/schemas/OnmsResource"
-          },
-          "id" : {
-            "$ref" : "#/components/schemas/ResourceId"
-          },
-          "path" : {
-            "$ref" : "#/components/schemas/ResourcePath"
-          },
-          "attributes" : {
-            "uniqueItems" : true,
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/OnmsAttribute"
-            }
           }
         },
         "example" : null
@@ -17923,11 +17923,11 @@
       "OnmsResourceType" : {
         "type" : "object",
         "properties" : {
-          "label" : {
+          "name" : {
             "type" : "string",
             "example" : null
           },
-          "name" : {
+          "label" : {
             "type" : "string",
             "example" : null
           }
@@ -17937,6 +17937,20 @@
       "ResourceDTO" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : null
+          },
+          "resource" : {
+            "$ref" : "#/components/schemas/OnmsResource"
+          },
+          "id" : {
+            "type" : "string",
+            "example" : null
+          },
+          "children" : {
+            "$ref" : "#/components/schemas/ResourceDTOCollection"
+          },
           "typeLabel" : {
             "type" : "string",
             "example" : null
@@ -17973,17 +17987,6 @@
             },
             "example" : null
           },
-          "link" : {
-            "type" : "string",
-            "example" : null
-          },
-          "id" : {
-            "type" : "string",
-            "example" : null
-          },
-          "resource" : {
-            "$ref" : "#/components/schemas/OnmsResource"
-          },
           "label" : {
             "type" : "string",
             "example" : null
@@ -17992,10 +17995,7 @@
             "type" : "string",
             "example" : null
           },
-          "children" : {
-            "$ref" : "#/components/schemas/ResourceDTOCollection"
-          },
-          "name" : {
+          "link" : {
             "type" : "string",
             "example" : null
           }
@@ -18018,7 +18018,7 @@
               "$ref" : "#/components/schemas/ResourceDTO"
             }
           },
-          "totalCount" : {
+          "offset" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -18034,7 +18034,7 @@
               "attribute" : true
             }
           },
-          "offset" : {
+          "totalCount" : {
             "type" : "integer",
             "format" : "int32",
             "example" : null,
@@ -18117,13 +18117,6 @@
       "Outage" : {
         "type" : "object",
         "properties" : {
-          "nodes" : {
-            "type" : "array",
-            "example" : null,
-            "items" : {
-              "$ref" : "#/components/schemas/Node"
-            }
-          },
           "interfaces" : {
             "type" : "array",
             "example" : null,
@@ -18131,11 +18124,11 @@
               "$ref" : "#/components/schemas/Interface"
             }
           },
-          "times" : {
+          "nodes" : {
             "type" : "array",
             "example" : null,
             "items" : {
-              "$ref" : "#/components/schemas/Time"
+              "$ref" : "#/components/schemas/Node"
             }
           },
           "name" : {
@@ -18145,6 +18138,13 @@
           "type" : {
             "type" : "string",
             "example" : null
+          },
+          "times" : {
+            "type" : "array",
+            "example" : null,
+            "items" : {
+              "$ref" : "#/components/schemas/Time"
+            }
           }
         },
         "example" : null,
@@ -18160,15 +18160,15 @@
             "type" : "string",
             "example" : null
           },
+          "day" : {
+            "type" : "string",
+            "example" : null
+          },
           "begins" : {
             "type" : "string",
             "example" : null
           },
           "ends" : {
-            "type" : "string",
-            "example" : null
-          },
-          "day" : {
             "type" : "string",
             "example" : null
           }
